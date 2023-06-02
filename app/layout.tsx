@@ -1,7 +1,7 @@
 import './globals.css'
-import { Inter } from 'next/font/google'
+import { DM_Serif_Display} from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+const dmSerifDisplay = DM_Serif_Display({ subsets: ["latin"], weight: "400" })
 
 export const metadata = {
   title: 'Create Next App',
@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={dmSerifDisplay.className}>{children}</body>
     </html>
   )
 }
