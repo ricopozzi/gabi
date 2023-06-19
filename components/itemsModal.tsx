@@ -38,7 +38,7 @@ export const ItemsModal: React.FC<any> = () => {
   const [modal] = useAtom(ModalAtom);
 
   return (
-    <div className="fixed top-0 w-screen h-screen bg-black/10 backdrop-blur-sm flex items-center justify-center px-4">
+    <div className="fixed left-0 top-0 z-50 w-screen h-screen bg-black/10 backdrop-blur-sm flex items-center justify-center px-4">
       <section className="w-full bg-white rounded-md py-10 flex flex-col">
         <p className="font-bold text-3xl text-gray-800 text-center w-full">
           Categorias
