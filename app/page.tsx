@@ -5,10 +5,22 @@ import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { ItemsNavbar } from "@/components/itemsNavbar";
 import { SloganSection } from "@/components/sloganSection";
+import { contentful} from "@/lib/contentful"
 
-async function getProducts() {}
+async function getProducts() {
+
+  const entries = await contentful.getEntries({
+    "metadata.tags.sys.id[all]": ['feminino']
+  })
+
+  return entries
+
+}
 
 export default async function Home() {
+  const entries = await getProducts()
+  
+  console.log(entries.items)
   return (
     <>
       <Header />
