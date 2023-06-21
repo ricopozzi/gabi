@@ -6,6 +6,9 @@ import React, { useEffect } from "react";
 
 const buttonsArray = [
   {
+    text: 'Todos'
+  },
+  {
     text: "Moda praia",
   },
   {

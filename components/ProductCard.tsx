@@ -30,11 +30,13 @@ const ProductCardSelected: React.FC<PCSelected> = ({
   setSelected,
 }) => {
   const [selectedSize, setSelectedSize] = useState<string>();
-  const formatWords = (word: string): string => {
-    const formatedWord = word.replace(" ", "%20");
 
-    return formatedWord;
-  };
+
+  const sortSizes = () => {
+    const sorted = sizes
+    return sorted
+  }
+ 
   const link = `https://api.whatsapp.com/send?phone=5512997100238&text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20escolhi%3A%20%20${title}%0A-%20TAMANHO%3A%20${selectedSize}%20Gostaria%20de%20ter%20mais%20informa%C3%A7%C3%B5es.`;
   return (
     <motion.div
@@ -55,7 +57,7 @@ const ProductCardSelected: React.FC<PCSelected> = ({
       <section className="flex flex-col mt-2">
         <p className="font-light">Selecione o tamanho que você deseja:</p>
         <div className="w-full flex gap-x-2 justify-center mt-3 items-center">
-          {sizes?.map((item, index) => (
+          {sortSizes()?.map((item, index) => (
             <div
               key={`SizEKEy-${index}`}
               onClick={() => setSelectedSize(item)}
@@ -89,9 +91,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   sizes,
 }) => {
   const [selected, setSelected] = useState<boolean>(false);
-  const link = `https://api.whatsapp.com/send?phone=5512997100238&text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20escolhi%3A%20%20NOME%20DA%20PE%C3%87A%0A-%20TAMANHO%3A%20G%20-%3E%20%0A%0AGostaria%20de%20ter%20mais%20informa%C3%A7%C3%B5es.`;
+
   return (
-    <div className="flex flex-col w-full h-[28rem] rounded border bg-gray-50 shadow-sm p-4">
+    <motion.div 
+    initial={{opacity: .5}}
+    animate={{opacity: 1}}
+    className="flex flex-col w-full h-[28rem] rounded border bg-gray-50 shadow-sm p-4">
       <AnimatePresence>
         {selected ? (
           <ProductCardSelected
@@ -120,7 +125,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 {sizes?.map((item, index) => (
                   <div
                     key={`SizEKEy-${index}`}
-                    className="px-3 py-[2px] border bg-gray-100 rounded"
+                    className="px-3 py-[2px] border bg-gray-100 rounded uppercase "
                   >
                     {item}
                   </div>
@@ -137,6 +142,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 };

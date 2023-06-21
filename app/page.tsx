@@ -1,26 +1,13 @@
 import { FloatingWhatsApp } from "@/components/FloatingWhatsapp";
-import { ProductCard } from "@/components/ProductCard";
 import { Testimonials } from "@/components/Testimonials";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { ItemsNavbar } from "@/components/itemsNavbar";
 import { SloganSection } from "@/components/sloganSection";
-import { contentful} from "@/lib/contentful"
-
-async function getProducts() {
-
-  const entries = await contentful.getEntries({
-    "metadata.tags.sys.id[all]": ['feminino']
-  })
-
-  return entries
-
-}
+import { ProductsSection } from "@/components/productsSection"
 
 export default async function Home() {
-  const entries = await getProducts()
-  
-  console.log(entries.items)
+ 
   return (
     <>
       <Header />
@@ -41,21 +28,7 @@ export default async function Home() {
             <ItemsNavbar />
           </div>
 
-          <div className="mt-10 flex flex-wrap gap-7 justify-center items-center">
-            <ProductCard
-              imageUrl="https://picsum.photos/600/500"
-              description="descrição teste bla bla bla lorem10j dnsadosajdsiajd iaojdoj aoid sdmoadj aiosdjaoisj"
-              sizes={["M", "G", "GG"]}
-              title="Cropped amarelo"
-            />
-
-            <ProductCard
-              imageUrl="https://picsum.photos/600/500"
-              description="descrição teste bla bla bla lorem10j dnsadosajdsiajd iaojdoj aoid sdmoadj aiosdjaoisj"
-              sizes={["M", "G", "GG"]}
-              title="Cropped amarelo"
-            />
-          </div>
+          <ProductsSection />
         </section>
 
         <div className="mt-10">
