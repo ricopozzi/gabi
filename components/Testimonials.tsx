@@ -7,7 +7,7 @@ interface TestProps {
 const Testimonial: React.FC<TestProps> = ({ text }) => {
   return (
     <p className="p-4 rounded-2xl text-lg text-center font-light border text-gray-900 bg-gray-100">
-      "{text}"
+      {text}
     </p>
   );
 };
