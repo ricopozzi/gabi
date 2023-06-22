@@ -111,7 +111,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               <Image
                 src={imageUrl}
                 alt="Foto do produto"
-                className="object-cover object-center rounded-lg"
+                className="object-cover object-center rounded-2xl"
                 fill
               />
             </div>
