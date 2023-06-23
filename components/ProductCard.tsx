@@ -1,15 +1,16 @@
 "use client";
 
 import { WhatsappLogo } from "@phosphor-icons/react";
-import Image from "next/image";
+import Image, {ImageProps} from "next/image";
 import React, {
   Dispatch,
   RefObject,
   SetStateAction,
+  forwardRef,
   useRef,
   useState,
 } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, VariantLabels, Variants, motion } from "framer-motion";
 
 interface ProductCardProps {
   title: string;
@@ -84,6 +85,18 @@ const ProductCardSelected: React.FC<PCSelected> = ({
   );
 };
 
+
+const ImageForwarded = forwardRef<HTMLImageElement, ImageProps>(
+  function Wrapper(props, ref) {
+    return <Image {...props} ref={ref} />
+  }
+)
+
+const MotionImage = motion(ImageForwarded)
+
+
+
+
 export const ProductCard: React.FC<ProductCardProps> = ({
   title,
   description,
@@ -91,12 +104,30 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   sizes,
 }) => {
   const [selected, setSelected] = useState<boolean>(false);
+  const [ imageClick, setImageClick] = useState<boolean>(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+
+  const imageVariants: Variants = {
+    closed: {
+      height: '13rem',
+      zIndex: 0
+    },
+    open: {
+      height: containerRef.current?.offsetHeight,
+      zIndex: 100,
+      position: 'absolute',
+      top: -10,
+      translateY: -50
+    }
+  }
 
   return (
     <motion.div 
     initial={{opacity: .5}}
     animate={{opacity: 1}}
-    className="flex flex-col w-full h-[28rem] rounded border bg-gray-50 shadow-sm p-4">
+    ref={containerRef}
+    className="flex flex-col w-full h-[28rem] rounded border bg-gray-50 shadow-sm p-4 relative">
       <AnimatePresence>
         {selected ? (
           <ProductCardSelected
@@ -107,14 +138,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         ) : (
           <>
             <p className="text-xl font-semibold">{title}</p>
-            <div className="relative w-full h-56 mt-5">
-              <Image
+            <motion.div
+            className="relative w-full h-56 mt-5">
+              <MotionImage
                 src={imageUrl}
+                onClick={() => setImageClick(!imageClick)}
+                animate={imageClick ? 'open': 'closed'}
+                variants={imageVariants}
+                transition={{
+                  type: 'just'
+                }}
                 alt="Foto do produto"
-                className="object-cover object-center rounded-2xl"
+                className="object-cover object-center rounded-lg absolute"
                 fill
               />
-            </div>
+            </motion.div>
             <p className="text-sm font-light text-gray-700 mt-2">
               {description}
             </p>

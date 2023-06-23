@@ -23,6 +23,8 @@ export  function ProductsSection(){
   const [ paginationPages, setPaginationPages ] = useState<number>(0)
   const [ total, setTotal ] = useState<number>(0)
 
+
+
   async function getProducts(skip: number, tag?: string) {
     if(!tag){ 
       const { items, total: totalProducts } = await contentful.getEntries<Products>({skip: skip * productsPerPage, limit: productsPerPage})
