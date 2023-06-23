@@ -5,4 +5,4 @@ interface AtomProps {
     current: string;
 }
 
-export const ModalAtom = atom<AtomProps>({isModalOpen: false, current: 'Moda praia' })
+export const ModalAtom = atom<AtomProps>({isModalOpen: false, current: 'Todos' })

@@ -4,6 +4,8 @@ import { contentful } from "@/lib/contentful"
 import { ProductCard } from "./ProductCard"
 import { useEffect, useState } from "react"
 import {  Entry, EntryFieldTypes} from "contentful"
+import { useAtom } from "jotai"
+import { ModalAtom } from "@/contexts/modal"
 
 type Products = {
   contentTypeId: "product",
@@ -18,17 +20,14 @@ type Products = {
 const productsPerPage = 2
 
 export  function ProductsSection(){
+  const [ modal ] = useAtom(ModalAtom)
   const [ products, setProducts ] = useState<Entry<Products, undefined, string>[]>()
   const [ paginationState, setpaginationState ] = useState<number>(0)
   const [ paginationPages, setPaginationPages ] = useState<number>(0)
-  const [ total, setTotal ] = useState<number>(0)
 
-
-
-  async function getProducts(skip: number, tag?: string) {
-    if(!tag){ 
+  async function getProducts(skip: number, tag: string) {
+    if(tag === 'Todos'){ 
       const { items, total: totalProducts } = await contentful.getEntries<Products>({skip: skip * productsPerPage, limit: productsPerPage})
-      setTotal(totalProducts)
       const totalPages = Math.ceil(totalProducts / productsPerPage)
       setPaginationPages(totalPages)
       return setProducts(items)
@@ -47,8 +46,8 @@ export  function ProductsSection(){
 
 
   useEffect(() => {
-    getProducts(paginationState)
-  }, [paginationState])
+    getProducts(paginationState, modal.current)
+  }, [paginationState, modal.current])
 
     return (
         <div className="mt-10 flex flex-wrap gap-7 justify-center items-center">
@@ -62,6 +61,7 @@ export  function ProductsSection(){
               sizes={item.fields.sizes} 
               title={item.fields.title} 
               paginationState={paginationState}
+              index={index}
               />
             ))
           ) : (

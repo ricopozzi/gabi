@@ -18,6 +18,7 @@ interface ProductCardProps {
   imageUrl: string;
   sizes: string[];
   paginationState: number;
+  index: number
 }
 
 interface PCSelected {
@@ -100,7 +101,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   description,
   imageUrl,
   sizes,
-  paginationState
+  paginationState,
+  index
 }) => {
   const [selected, setSelected] = useState<boolean>(false);
   const [imageClick, setImageClick] = useState<boolean>(false)
@@ -130,6 +132,9 @@ useEffect(() => {
     <motion.div 
     initial={{opacity: .5}}
     animate={{opacity: 1}}
+    transition={{
+      delay: .3 * index
+    }}
     ref={containerRef}
     className="flex flex-col w-full min-h-[28rem] rounded border bg-gray-50 shadow-sm p-4 relative">
       <AnimatePresence>
@@ -151,7 +156,8 @@ useEffect(() => {
                 animate={imageClick ? 'open': 'hidden'}
                 variants={imageVariants}
                 transition={{
-                  type: 'tween'
+                  type: 'tween',
+           
                 }}
                 alt="Foto do produto"
                 className="object-cover object-center rounded-lg absolute"
