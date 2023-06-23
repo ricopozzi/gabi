@@ -4,19 +4,20 @@ import { WhatsappLogo } from "@phosphor-icons/react";
 import Image, {ImageProps} from "next/image";
 import React, {
   Dispatch,
-  RefObject,
   SetStateAction,
   forwardRef,
+  useEffect,
   useRef,
   useState,
 } from "react";
-import { AnimatePresence, VariantLabels, Variants, motion } from "framer-motion";
+import { AnimatePresence, Variants, motion, useAnimate } from "framer-motion";
 
 interface ProductCardProps {
   title: string;
   description: string;
   imageUrl: string;
   sizes: string[];
+  paginationState: number;
 }
 
 interface PCSelected {
@@ -49,7 +50,7 @@ const ProductCardSelected: React.FC<PCSelected> = ({
     >
       <button
         onClick={() => setSelected(false)}
-        className="absolute top-1 left-1 text-lg font-medium text-neutral-800"
+        className="mr-auto text-lg font-medium text-neutral-800"
       >
         Voltar
       </button>
@@ -92,26 +93,25 @@ const ImageForwarded = forwardRef<HTMLImageElement, ImageProps>(
   }
 )
 
-const MotionImage = motion(ImageForwarded)
-
-
-
+const MotionImage = motion(ImageForwarded, {forwardMotionProps: false})
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   title,
   description,
   imageUrl,
   sizes,
+  paginationState
 }) => {
   const [selected, setSelected] = useState<boolean>(false);
-  const [ imageClick, setImageClick] = useState<boolean>(false)
+  const [imageClick, setImageClick] = useState<boolean>(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
 
   const imageVariants: Variants = {
-    closed: {
-      height: '13rem',
-      zIndex: 0
+    hidden: {
+      zIndex: 0,
+      top: 0,
+      translateY: 0
     },
     open: {
       height: containerRef.current?.offsetHeight,
@@ -122,12 +122,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     }
   }
 
+useEffect(() => {
+  setImageClick(false)
+}, [paginationState])
+
   return (
     <motion.div 
     initial={{opacity: .5}}
     animate={{opacity: 1}}
     ref={containerRef}
-    className="flex flex-col w-full h-[28rem] rounded border bg-gray-50 shadow-sm p-4 relative">
+    className="flex flex-col w-full min-h-[28rem] rounded border bg-gray-50 shadow-sm p-4 relative">
       <AnimatePresence>
         {selected ? (
           <ProductCardSelected
@@ -143,17 +147,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               <MotionImage
                 src={imageUrl}
                 onClick={() => setImageClick(!imageClick)}
-                animate={imageClick ? 'open': 'closed'}
+                initial={'hidden'}
+                animate={imageClick ? 'open': 'hidden'}
                 variants={imageVariants}
                 transition={{
-                  type: 'just'
+                  type: 'tween'
                 }}
                 alt="Foto do produto"
                 className="object-cover object-center rounded-lg absolute"
                 fill
               />
             </motion.div>
-            <p className="text-sm font-light text-gray-700 mt-2">
+            <p className="text-sm font-light text-gray-700 mt-5">
               {description}
             </p>
 

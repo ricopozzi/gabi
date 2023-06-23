@@ -15,7 +15,7 @@ type Products = {
   }
 }
 
-const productsPerPage = 1
+const productsPerPage = 2
 
 export  function ProductsSection(){
   const [ products, setProducts ] = useState<Entry<Products, undefined, string>[]>()
@@ -45,6 +45,7 @@ export  function ProductsSection(){
   return setProducts(items)
   }
 
+
   useEffect(() => {
     getProducts(paginationState)
   }, [paginationState])
@@ -59,7 +60,9 @@ export  function ProductsSection(){
               //@ts-ignore
               imageUrl={`https:${item?.fields?.image?.fields?.file.url}`} 
               sizes={item.fields.sizes} 
-              title={item.fields.title} />
+              title={item.fields.title} 
+              paginationState={paginationState}
+              />
             ))
           ) : (
             <div>loading</div>
